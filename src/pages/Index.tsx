@@ -4,6 +4,7 @@ import FeaturedMenu from '@/components/FeaturedMenu';
 import Experience from '@/components/Experience';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
+import Location from '@/components/Location';
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <Hero />
       <FeaturedMenu />
       <Experience />
+      <Location />
       <Newsletter />
       <Footer />
     </div>

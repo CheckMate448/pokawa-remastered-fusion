@@ -3,71 +3,77 @@ import { Heart, Plus, Star, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import menuImage from '@/assets/menu-bowls.jpg';
+import saladeCesareImage from '@/assets/salades/cesar.jpg';
+import saladeItalienneImage from '@/assets/salades/italienne.jpg';
+import saladeNicoiseImage from '@/assets/salades/nicoise.jpg';
+import saladeExotiqueImage from '@/assets/salades/exotique.jpg';
+import saladeMexicaineImage from '@/assets/salades/mexicaine.jpg';
+import saladeProteineeImage from '@/assets/salades/proteinee.jpg';
 
 const menuItems = [
   {
-    id: 1,
-    name: "Signature Salmon Bowl",
-    description: "Fresh Atlantic salmon, avocado, edamame, cucumber, seaweed salad with our signature sauce",
-    price: 16.90,
-    category: "Premium",
-    image: menuImage,
+    id: 10,
+    name: "Salade César",
+    description: "Une salade classique revisitée : laitue romaine croquante, tomates cerises juteuses, croûtons dorés, graines de chia, roquette fraîche, coriandre et graines de courge. Accompagnée d’un œuf poché, de fromage Grana Padano, et d’une escalope tendre (panée ou sauce moutarde citron). Le tout nappé d’une savoureuse sauce César.",
+    price: 20.00,
+    category: "Salades",
+    image: saladeCesareImage,
+    rating: 4.8,
+    popular: true
+  },
+  {
+    id: 11,
+    name: "Salade Italienne",
+    description: "Une explosion de saveurs méditerranéennes avec du pain banette croustillant, des tomates fraîches, de la roquette, des courgettes grillées et une burrata onctueuse. Garnie de chips d’ail, menthe, coriandre, noix caramélisées et basilic. Arrosée de crème balsamique, sauce pesto et parsemée de Grana Padano.",
+    price: 25.00,
+    category: "Salades",
+    image: saladeItalienneImage,
     rating: 4.9,
     popular: true
   },
   {
-    id: 2,
-    name: "Spicy Tuna Delight",
-    description: "Sashimi-grade tuna, spicy mayo, jalapeños, mango, red onion, crispy onions",
-    price: 18.50,
-    category: "Spicy",
-    image: menuImage,
+    id: 12,
+    name: "Salade Niçoise",
+    description: "Un classique du sud de la France : laitue fraîche, tomates cerises, œuf dur, poivrons, haricots verts, radis et pommes de terre sautées. Le tout relevé avec une sauce au thon et olives, des oignons fins et une vinaigrette classique.",
+    price: 18.00,
+    category: "Salades",
+    image: saladeNicoiseImage,
+    rating: 4.7,
+    popular: false
+  },
+  {
+    id: 13,
+    name: "Salade Exotique",
+    description: "Fraîcheur tropicale garantie ! Roquette, tomates cerises, avocat crémeux, carottes croquantes, crevettes, radis, ananas sucré, menthe et aneth. Complétée par du concombre, de la ricotta, des graines de chia, du maïs et une délicieuse sauce thaïe.",
+    price: 32.00,
+    category: "Salades",
+    image: saladeExotiqueImage,
     rating: 4.8,
     popular: false
   },
   {
-    id: 3,
-    name: "Teriyaki Chicken Bowl",
-    description: "Grilled chicken teriyaki, steamed broccoli, carrots, brown rice, sesame seeds",
-    price: 14.90,
-    category: "Classic",
-    image: menuImage,
+    id: 14,
+    name: "Salade Mexicaine",
+    description: "Une salade épicée et gourmande avec de la laitue, du poulet piquant, du maïs, des tomates cerises, des crackers de pita, poivrons sautés, haricots rouges, avocat, pommes de terre, oignons caramélisés, persil et une sauce fromagère onctueuse.",
+    price: 26.00,
+    category: "Salades",
+    image: saladeMexicaineImage,
     rating: 4.7,
     popular: true
   },
   {
-    id: 4,
-    name: "Vegan Power Bowl",
-    description: "Marinated tofu, quinoa, mixed greens, cherry tomatoes, hemp seeds, tahini dressing",
-    price: 15.50,
-    category: "Vegan",
-    image: menuImage,
-    rating: 4.8,
-    popular: false
-  },
-  {
-    id: 5,
-    name: "Ocean Mix Supreme",
-    description: "Salmon & tuna combo, tobiko, avocado, cucumber, pickled ginger, wasabi mayo",
-    price: 22.90,
-    category: "Premium",
-    image: menuImage,
-    rating: 5.0,
-    popular: true
-  },
-  {
-    id: 6,
-    name: "Tropical Mango Bowl",
-    description: "Grilled shrimp, fresh mango, coconut flakes, lime zest, cilantro, sweet chili sauce",
-    price: 17.50,
-    category: "Tropical",
-    image: menuImage,
+    id: 15,
+    name: "Salade Protéinée",
+    description: "Un boost d’énergie et de protéines ! Laitue, riz basmati, tomates cerises, escalope moutarde citron, deux œufs durs, poulet fumé, maïs, persil et fromage sicilien. Garnie d’un mix de graines croquantes et d’une sauce fromagère savoureuse.",
+    price: 28.00,
+    category: "Salades",
+    image: saladeProteineeImage,
     rating: 4.9,
-    popular: false
+    popular: true
   }
 ];
 
-const categories = ["All", "Premium", "Spicy", "Classic", "Vegan", "Tropical"];
+const categories = ["All", "Salades"];
 
 const FeaturedMenu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -98,7 +104,7 @@ const FeaturedMenu = () => {
             <span className="text-primary block">Love & Care</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Each bowl is a masterpiece, combining the freshest ingredients with authentic Hawaiian flavors
+            Each dish is a masterpiece, combining the freshest ingredients with authentic local flavors
           </p>
         </div>
 
@@ -162,7 +168,7 @@ const FeaturedMenu = () => {
                   <h3 className="text-xl font-playfair font-semibold text-foreground group-hover:text-primary transition-smooth">
                     {item.name}
                   </h3>
-                  <span className="text-2xl font-bold text-primary">${item.price}</span>
+                  <span className="text-2xl font-bold text-primary">{item.price.toFixed(2)} TND</span>
                 </div>
                 
                 <p className="text-muted-foreground leading-relaxed">
@@ -185,10 +191,12 @@ const FeaturedMenu = () => {
 
         {/* View All Button */}
         <div className="text-center mt-12">
-          <Button className="btn-secondary text-lg px-10 py-4">
-            View Full Menu
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
+          <a href="/build-salad">
+            <Button className="btn-secondary text-lg px-10 py-4">
+              Build Your Salad
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </a>
         </div>
       </div>
     </section>

@@ -61,14 +61,14 @@ const Experience = () => {
           <div className="space-y-8">
             <div>
               <div className="inline-flex items-center px-4 py-2 bg-accent/10 text-accent rounded-full mb-4">
-                <span className="font-semibold">The PokeFlow Experience</span>
+                <span className="font-semibold">The Vegeta Experience</span>
               </div>
               <h2 className="text-5xl md:text-6xl font-playfair font-bold text-foreground mb-6">
                 Why We're
                 <span className="text-primary block">Different</span>
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                At PokeFlow, we believe that great food starts with great ingredients. 
+                At Vegeta, we believe that great food starts with great ingredients. 
                 Every bowl is crafted with passion, using only the freshest, highest-quality 
                 ingredients sourced from trusted partners who share our commitment to excellence.
               </p>

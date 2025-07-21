@@ -18,7 +18,7 @@ const Newsletter = () => {
     // Simulate API call
     setTimeout(() => {
       toast({
-        title: "Welcome to PokeFlow! 🌺",
+        title: "Welcome to Vegeta! 🌺",
         description: "Check your email for your exclusive 20% off coupon!",
       });
       setEmail('');
@@ -40,7 +40,7 @@ const Newsletter = () => {
             Get 20% Off Your First Order
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join our community of poké lovers and be the first to know about new menu items, 
+            Join our community of Vegeta lovers and be the first to know about new menu items, 
             exclusive offers, and special events.
           </p>
 
