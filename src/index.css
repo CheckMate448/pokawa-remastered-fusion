@@ -1,42 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Premium Poké Restaurant Design System */
 
 @layer base {
   :root {
+    /* Core Brand Colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 15% 15%;
+
+    /* Ocean Blue - Primary Brand */
+    --primary: 220 91% 24%;
+    --primary-light: 220 91% 35%;
+    --primary-dark: 220 91% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Coral - Secondary Energy */
+    --secondary: 12 100% 69%;
+    --secondary-light: 12 100% 80%;
+    --secondary-dark: 12 100% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Fresh Green - Accent */
+    --accent: 160 84% 39%;
+    --accent-light: 160 84% 50%;
+    --accent-dark: 160 84% 30%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Sophisticated Neutrals */
+    --muted: 220 14% 96%;
+    --muted-light: 220 14% 98%;
+    --muted-foreground: 220 15% 45%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 220 91% 24%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Premium Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 91% 24%), hsl(12 100% 69%));
+    --gradient-ocean: linear-gradient(135deg, hsl(220 91% 24%), hsl(220 91% 35%));
+    --gradient-sunset: linear-gradient(135deg, hsl(12 100% 69%), hsl(160 84% 39%));
+    --gradient-fresh: linear-gradient(135deg, hsl(160 84% 39%), hsl(220 91% 24%));
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Elegant Shadows */
+    --shadow-glow: 0 0 40px hsl(220 91% 24% / 0.2);
+    --shadow-card: 0 10px 30px -10px hsl(220 15% 15% / 0.1);
+    --shadow-floating: 0 20px 60px -10px hsl(220 91% 24% / 0.3);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Animation Variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -94,12 +115,156 @@ All colors MUST be HSL.
   }
 }
 
+  }
+
+  .dark {
+    /* Premium Dark Mode */
+    --background: 220 15% 8%;
+    --foreground: 0 0% 95%;
+    --primary: 220 91% 35%;
+    --secondary: 12 100% 65%;
+    --accent: 160 84% 45%;
+    --muted: 220 15% 12%;
+    --muted-foreground: 220 15% 65%;
+    --card: 220 15% 10%;
+    --border: 220 15% 18%;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair;
+  }
+}
+
+@layer components {
+  /* Hero Gradients */
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-ocean {
+    background: var(--gradient-ocean);
+  }
+
+  .gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+
+  .gradient-fresh {
+    background: var(--gradient-fresh);
+  }
+
+  /* Premium Shadows */
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-floating {
+    box-shadow: var(--shadow-floating);
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Interactive Elements */
+  .btn-primary {
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl font-semibold transition-smooth shadow-card hover:shadow-floating transform hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-4 rounded-2xl font-semibold transition-smooth shadow-card hover:shadow-floating transform hover:scale-105;
+  }
+
+  .btn-accent {
+    @apply bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-2xl font-semibold transition-smooth shadow-card hover:shadow-floating transform hover:scale-105;
+  }
+
+  .card-premium {
+    @apply bg-card rounded-3xl p-8 shadow-card hover:shadow-floating transition-smooth border border-border/50;
+  }
+
+  /* Floating Animation */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Pulse Glow */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse-glow {
+    from { box-shadow: var(--shadow-glow); }
+    to { box-shadow: 0 0 60px hsl(220 91% 24% / 0.4); }
+  }
+
+  /* Slide In Animations */
+  .slide-in-up {
+    animation: slideInUp 0.8s ease-out;
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .slide-in-left {
+    animation: slideInLeft 0.8s ease-out;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.8s ease-out;
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 }
