@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Menu, X, ShoppingBag, User, MapPin, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import CalorieCalculator from '@/components/CalorieCalculator';
 import logoImage from '@/assets/VEGETA PUCTURE.jpg';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCalorieCalculatorOpen, setIsCalorieCalculatorOpen] = useState(false);
 
   const handleFindStore = () => {
     window.open('https://www.google.com/maps/place/Vegeta/@36.8715275,10.3416246,17z/data=!4m6!3m5!1s0x12e2b50079a27d0b:0xd816c6af41ff627!8m2!3d36.8716671!4d10.3415633!16s%2Fg%2F11xdm4zlvh?entry=ttu', '_blank');
@@ -30,7 +32,12 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-foreground hover:text-primary"
+              onClick={() => setIsCalorieCalculatorOpen(true)}
+            >
               <Calculator className="w-4 h-4 mr-2" />
               Calories
             </Button>
@@ -68,7 +75,12 @@ const Header = () => {
               <a href="#about" className="text-foreground hover:text-primary transition-smooth font-medium">About</a>
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth font-medium">Contact</a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" size="sm" className="justify-start">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="justify-start"
+                  onClick={() => setIsCalorieCalculatorOpen(true)}
+                >
                   <Calculator className="w-4 h-4 mr-2" />
                   Calories
                 </Button>
@@ -89,6 +101,12 @@ const Header = () => {
           </div>
         )}
       </div>
+      
+      {/* Calorie Calculator Modal */}
+      <CalorieCalculator 
+        isOpen={isCalorieCalculatorOpen} 
+        onClose={() => setIsCalorieCalculatorOpen(false)} 
+      />
     </header>
   );
 };
