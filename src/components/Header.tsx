@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, ShoppingBag, User, MapPin } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, MapPin, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logoImage from '@/assets/VEGETA PUCTURE.jpg';
 
@@ -30,6 +30,10 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+              <Calculator className="w-4 h-4 mr-2" />
+              Calories
+            </Button>
             <Button variant="ghost" size="sm" className="text-foreground hover:text-primary" onClick={handleFindStore}>
               <MapPin className="w-4 h-4 mr-2" />
               Find Store
@@ -64,6 +68,10 @@ const Header = () => {
               <a href="#about" className="text-foreground hover:text-primary transition-smooth font-medium">About</a>
               <a href="#contact" className="text-foreground hover:text-primary transition-smooth font-medium">Contact</a>
               <div className="flex flex-col space-y-2 pt-4">
+                <Button variant="ghost" size="sm" className="justify-start">
+                  <Calculator className="w-4 h-4 mr-2" />
+                  Calories
+                </Button>
                 <Button variant="ghost" size="sm" className="justify-start" onClick={handleFindStore}>
                   <MapPin className="w-4 h-4 mr-2" />
                   Find Store
