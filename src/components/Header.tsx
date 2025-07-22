@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Menu, X, ShoppingBag, User, MapPin, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import CalorieCalculator from '@/components/CalorieCalculator';
 import logoImage from '@/assets/VEGETA PUCTURE.jpg';
 
@@ -49,6 +50,11 @@ const Header = () => {
               <User className="w-4 h-4 mr-2" />
               Account
             </Button>
+            <Link to="/admin/login">
+              <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+                Admin
+              </Button>
+            </Link>
             <Button className="btn-primary">
               <ShoppingBag className="w-4 h-4 mr-2" />
               Order Now
@@ -92,6 +98,11 @@ const Header = () => {
                   <User className="w-4 h-4 mr-2" />
                   Account
                 </Button>
+                <Link to="/admin/login">
+                  <Button variant="ghost" size="sm" className="justify-start">
+                    Admin
+                  </Button>
+                </Link>
                 <Button className="btn-primary">
                   <ShoppingBag className="w-4 h-4 mr-2" />
                   Order Now
