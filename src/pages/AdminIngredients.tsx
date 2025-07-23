@@ -4,28 +4,34 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Package, AlertTriangle } from 'lucide-react';
-import { Ingredient } from '@/types/admin';
-import { mockIngredients } from '@/data/mockData';
+import { Plus, Package, AlertTriangle, Upload, Loader2, Trash2, Edit } from 'lucide-react';
+import { useIngredients, Ingredient } from '@/hooks/useIngredients';
+import { StorageService } from '@/services/storageService';
 
 const AdminIngredients = () => {
-  const [ingredients, setIngredients] = useState<Ingredient[]>(mockIngredients);
+  const { ingredients, loading, addIngredient, updateIngredient, deleteIngredient } = useIngredients();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingIngredient, setEditingIngredient] = useState<Ingredient | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
   const [newIngredient, setNewIngredient] = useState<Partial<Ingredient>>({
     name: '',
     category: '',
-    inStock: true,
+    description: '',
+    calories: 0,
+    in_stock: true,
   });
 
-  const categories = ['Greens', 'Vegetables', 'Cheese', 'Protein', 'Toppings'];
+  const categories = ['Base', 'Vegetables', 'Dairy', 'Protein', 'Dressing', 'Toppings'];
 
-  const handleAddIngredient = () => {
+  const handleAddIngredient = async () => {
     if (!newIngredient.name || !newIngredient.category) {
       toast({
         title: "Missing Information",
@@ -35,38 +41,90 @@ const AdminIngredients = () => {
       return;
     }
 
-    const ingredient: Ingredient = {
-      id: Date.now().toString(),
-      name: newIngredient.name!,
-      category: newIngredient.category!,
-      inStock: newIngredient.inStock ?? true,
-    };
+    try {
+      await addIngredient({
+        name: newIngredient.name!,
+        category: newIngredient.category!,
+        description: newIngredient.description,
+        calories: newIngredient.calories,
+        in_stock: newIngredient.in_stock ?? true,
+      });
 
-    setIngredients([...ingredients, ingredient]);
-    setNewIngredient({
-      name: '',
-      category: '',
-      inStock: true,
-    });
-    setIsAddDialogOpen(false);
-    
-    toast({
-      title: "Ingredient Added",
-      description: `${ingredient.name} has been added to the inventory.`,
-    });
+      setNewIngredient({
+        name: '',
+        category: '',
+        description: '',
+        calories: 0,
+        in_stock: true,
+      });
+      setIsAddDialogOpen(false);
+    } catch (error) {
+      // Error handled by hook
+    }
   };
 
-  const toggleStock = (id: string) => {
-    const updatedIngredients = ingredients.map(ingredient =>
-      ingredient.id === id ? { ...ingredient, inStock: !ingredient.inStock } : ingredient
-    );
-    setIngredients(updatedIngredients);
-    
-    const ingredient = ingredients.find(i => i.id === id);
-    toast({
-      title: "Stock Updated",
-      description: `${ingredient?.name} is now ${!ingredient?.inStock ? 'in stock' : 'out of stock'}.`,
-    });
+  const handleEditIngredient = async () => {
+    if (!editingIngredient) return;
+
+    try {
+      await updateIngredient(editingIngredient.id, {
+        name: editingIngredient.name,
+        category: editingIngredient.category,
+        description: editingIngredient.description,
+        calories: editingIngredient.calories,
+        in_stock: editingIngredient.in_stock,
+      });
+      
+      setIsEditDialogOpen(false);
+      setEditingIngredient(null);
+    } catch (error) {
+      // Error handled by hook
+    }
+  };
+
+  const handleImageUpload = async (file: File, isEdit: boolean = false) => {
+    setIsUploading(true);
+    try {
+      const imageUrl = await StorageService.uploadImage(file, 'ingredients');
+      
+      if (isEdit && editingIngredient) {
+        setEditingIngredient({ ...editingIngredient, image_url: imageUrl });
+      } else {
+        setNewIngredient({ ...newIngredient, image_url: imageUrl });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const toggleStock = async (ingredient: Ingredient) => {
+    try {
+      await updateIngredient(ingredient.id, { in_stock: !ingredient.in_stock });
+    } catch (error) {
+      // Error handled by hook
+    }
+  };
+
+  const handleDeleteIngredient = async (ingredient: Ingredient) => {
+    try {
+      if (ingredient.image_url) {
+        await StorageService.deleteImage(ingredient.image_url, 'ingredients');
+      }
+      await deleteIngredient(ingredient.id);
+    } catch (error) {
+      // Error handled by hook
+    }
+  };
+
+  const openEditDialog = (ingredient: Ingredient) => {
+    setEditingIngredient({ ...ingredient });
+    setIsEditDialogOpen(true);
   };
 
   const groupedIngredients = categories.map(category => ({
@@ -75,8 +133,16 @@ const AdminIngredients = () => {
   })).filter(group => group.items.length > 0);
 
   const totalIngredients = ingredients.length;
-  const inStockCount = ingredients.filter(i => i.inStock).length;
-  const outOfStockCount = ingredients.filter(i => !i.inStock).length;
+  const inStockCount = ingredients.filter(i => i.in_stock).length;
+  const outOfStockCount = ingredients.filter(i => !i.in_stock).length;
+
+  if (loading) {
+    return (
+      <div className="p-6 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -107,6 +173,25 @@ const AdminIngredients = () => {
                 />
               </div>
               <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={newIngredient.description || ''}
+                  onChange={(e) => setNewIngredient({ ...newIngredient, description: e.target.value })}
+                  placeholder="Enter ingredient description"
+                />
+              </div>
+              <div>
+                <Label htmlFor="calories">Calories</Label>
+                <Input
+                  id="calories"
+                  type="number"
+                  value={newIngredient.calories || 0}
+                  onChange={(e) => setNewIngredient({ ...newIngredient, calories: parseInt(e.target.value) || 0 })}
+                  placeholder="Enter calories"
+                />
+              </div>
+              <div>
                 <Label htmlFor="category">Category *</Label>
                 <Select
                   value={newIngredient.category || ''}
@@ -124,21 +209,137 @@ const AdminIngredients = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor="image">Image</Label>
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImageUpload(file);
+                  }}
+                  disabled={isUploading}
+                />
+                {isUploading && (
+                  <div className="flex items-center mt-2">
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <span className="text-sm">Uploading...</span>
+                  </div>
+                )}
+              </div>
               <div className="flex items-center space-x-2">
                 <Switch
-                  id="inStock"
-                  checked={newIngredient.inStock ?? true}
-                  onCheckedChange={(checked) => setNewIngredient({ ...newIngredient, inStock: checked })}
+                  id="in_stock"
+                  checked={newIngredient.in_stock ?? true}
+                  onCheckedChange={(checked) => setNewIngredient({ ...newIngredient, in_stock: checked })}
                 />
-                <Label htmlFor="inStock">In Stock</Label>
+                <Label htmlFor="in_stock">In Stock</Label>
               </div>
-              <Button onClick={handleAddIngredient} className="w-full">
+            </div>
+            <DialogFooter>
+              <Button onClick={handleAddIngredient} disabled={isUploading}>
                 Add Ingredient
               </Button>
-            </div>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Ingredient</DialogTitle>
+            <DialogDescription>
+              Update the ingredient information.
+            </DialogDescription>
+          </DialogHeader>
+          {editingIngredient && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="edit-name">Name *</Label>
+                <Input
+                  id="edit-name"
+                  value={editingIngredient.name || ''}
+                  onChange={(e) => setEditingIngredient({ ...editingIngredient, name: e.target.value })}
+                  placeholder="Enter ingredient name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-description">Description</Label>
+                <Textarea
+                  id="edit-description"
+                  value={editingIngredient.description || ''}
+                  onChange={(e) => setEditingIngredient({ ...editingIngredient, description: e.target.value })}
+                  placeholder="Enter ingredient description"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-calories">Calories</Label>
+                <Input
+                  id="edit-calories"
+                  type="number"
+                  value={editingIngredient.calories || 0}
+                  onChange={(e) => setEditingIngredient({ ...editingIngredient, calories: parseInt(e.target.value) || 0 })}
+                  placeholder="Enter calories"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-category">Category *</Label>
+                <Select
+                  value={editingIngredient.category || ''}
+                  onValueChange={(value) => setEditingIngredient({ ...editingIngredient, category: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="edit-image">Update Image</Label>
+                <Input
+                  id="edit-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImageUpload(file, true);
+                  }}
+                  disabled={isUploading}
+                />
+                {editingIngredient.image_url && (
+                  <img 
+                    src={editingIngredient.image_url} 
+                    alt={editingIngredient.name} 
+                    className="mt-2 h-20 w-20 object-cover rounded"
+                  />
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="edit-in_stock"
+                  checked={editingIngredient.in_stock ?? true}
+                  onCheckedChange={(checked) => setEditingIngredient({ ...editingIngredient, in_stock: checked })}
+                />
+                <Label htmlFor="edit-in_stock">In Stock</Label>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={handleEditIngredient} disabled={isUploading}>
+              Update Ingredient
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -194,22 +395,51 @@ const AdminIngredients = () => {
                     className="flex items-center justify-between p-3 border rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
+                      {ingredient.image_url && (
+                        <img 
+                          src={ingredient.image_url} 
+                          alt={ingredient.name}
+                          className="h-12 w-12 object-cover rounded"
+                        />
+                      )}
                       <div className="flex-1">
                         <p className="font-medium">{ingredient.name}</p>
+                        {ingredient.description && (
+                          <p className="text-xs text-muted-foreground">{ingredient.description}</p>
+                        )}
+                        {ingredient.calories && (
+                          <p className="text-xs text-muted-foreground">{ingredient.calories} cal</p>
+                        )}
                         <div className="flex items-center space-x-2 mt-1">
                           <Badge
-                            variant={ingredient.inStock ? 'default' : 'destructive'}
+                            variant={ingredient.in_stock ? 'default' : 'destructive'}
                             className="text-xs"
                           >
-                            {ingredient.inStock ? 'In Stock' : 'Out of Stock'}
+                            {ingredient.in_stock ? 'In Stock' : 'Out of Stock'}
                           </Badge>
                         </div>
                       </div>
                     </div>
-                    <Switch
-                      checked={ingredient.inStock}
-                      onCheckedChange={() => toggleStock(ingredient.id)}
-                    />
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => openEditDialog(ingredient)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteIngredient(ingredient)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                      <Switch
+                        checked={ingredient.in_stock}
+                        onCheckedChange={() => toggleStock(ingredient)}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
