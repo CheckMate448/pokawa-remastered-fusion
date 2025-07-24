@@ -5,45 +5,115 @@ import { Button } from '@/components/ui/button';
 
 const ingredientCategories = [
   {
-    name: 'Base',
+    name: 'Choose a Base',
     options: [
-      { name: 'Laitue', price: 3 },
-      { name: 'Riz', price: 4 },
-      { name: 'Quinoa', price: 5 },
-      { name: 'Roquette', price: 4 }
+      { name: 'Lettuce', price: 3.5 },
+      { name: 'Rice', price: 4 },
+      { name: 'Quinoa', price: 7 },
+      { name: 'Lettuce & Rice', price: 5 }
     ]
   },
   {
-    name: 'Protéines',
+    name: 'Choose a Protein (OR GO VEGETARIAN)',
     options: [
-      { name: 'Poulet', price: 7 },
-      { name: 'Thon', price: 8 },
-      { name: 'Crevettes', price: 9 },
-      { name: 'Tofu', price: 6 }
+      { name: 'Spicy Chicken', price: 4 },
+      { name: 'Lemon Mustard Chicken Escalope', price: 4 },
+      { name: 'Chicken Supreme', price: 4 },
+      { name: 'Tuna', price: 3.5 },
+      { name: 'Ham', price: 3.5 },
+      { name: 'Octopus', price: 11 },
+      { name: 'Shrimp', price: 11 },
+      { name: 'Egg', price: 1 }
+      
     ]
   },
   {
-    name: 'Toppings',
+    name: 'CHOOSE YOUR VEGETABLES',
     options: [
-      { name: 'Avocat', price: 3 },
-      { name: 'Tomates cerises', price: 2 },
-      { name: 'Oeuf', price: 2 },
-      { name: 'Maïs', price: 1 },
-      { name: 'Oignons', price: 1 },
-      { name: 'Radis', price: 1 },
-      { name: 'Graines de chia', price: 2 }
+      { name: 'Corn', price: 1.5 },
+      { name: 'Sweet Potato', price: 2.5 },
+      { name: 'Carrot', price: 1 },
+      { name: 'Red/Green Cabbage', price: 1 },
+      { name: 'Zucchini', price: 1.5 },
+      { name: 'Broccoli', price: 3 },
+      { name: 'Cherry Tomato', price: 1.5 },
+      { name: 'Spinach', price: 2.5 },
+      { name: 'Caramelized Onions', price: 1.5 },
+      { name: 'Bell Pepper', price: 2 },
+      { name: 'Cucumber', price: 1 },
+      { name: 'Beetroot', price: 1.5 },
+      { name: 'Eggplant', price: 1.5 },
+      { name: 'Mushroom', price: 3.5 },
+      { name: 'Onion', price: 1 },
+      { name: 'Arugula', price: 1.5 },
+      { name: 'Green/Red Bean', price: 2.5 },
+      { name: 'Potato', price: 1.5 },
+      { name: 'Artichoke', price: 2.5 },
+
     ]
   },
-  {
-    name: 'Sauces',
-    options: [
-      { name: 'César', price: 1 },
-      { name: 'Moutarde citron', price: 1 },
-      { name: 'Thaï', price: 1 },
-      { name: 'Pesto', price: 2 },
-      { name: 'Balsamique', price: 1 }
-    ]
-  }
+{
+  name: 'CHOOSE 1 CHEESE',
+  options: [
+    { name: 'Sicilien', price: 3 },
+    { name: 'Ricotta', price: 3 },
+    { name: 'Mozzarella Ball', price: 4 },
+    { name: 'Gouda', price: 3.5 },
+    { name: 'Gruyère', price: 3.5 },
+    { name: 'Grana Padano', price: 4.5 }
+  ]
+},
+
+{
+  name: 'CHOOSE YOUR FRUITS & SEEDS',
+  options: [
+    { name: 'Avocado', price: 6 },
+    { name: 'Pineapple', price: 4 },
+    { name: 'Seed Mix', price: 3.5 },
+    { name: 'Chia Seeds', price: 2 },
+    { name: 'Kiwi', price: 3 },
+    { name: 'Lemon', price: 0.5 },
+    { name: 'Caramelized Nuts', price: 3.5 },
+    { name: 'Cashew Nuts', price: 3 },
+    { name: 'Peanut', price: 1.5 },
+    { name: 'Raisins', price: 1.5 },
+    { name: 'Sliced Almonds', price: 3 },
+    { name: 'Sesame', price: 2 }
+  ]
+},
+{
+  name: 'EXTRA & TOPPINGS',
+  options: [
+    { name: 'Preserved Lemon', price: 1 },
+    { name: 'Asian Pickles (Cucumber & Carrot)', price: 4 },
+    { name: 'Sun-Dried Tomatoes', price: 1.5 },
+    { name: 'Cayenne Pepper', price: 1 },
+    { name: 'Pickles', price: 1 },
+    { name: 'Capres', price: 1 },
+    { name: 'Olives', price: 1 },
+    { name: 'Crouton', price: 0.5 },
+    { name: 'Crackers', price: 0.5 }
+  ]
+},
+{
+  name: 'CHOOSE A SAUCE',
+  options: [
+    { name: 'Pesto Sauce', price: 0 },
+    { name: 'Creamy Cheese Sauce', price: 0 },
+    { name: 'Asian Sauce', price: 0 },
+    { name: 'Citrus Sauce (Orange & Lemon)', price: 0 },
+    { name: 'Honey Balsamic Sauce', price: 0 },
+    { name: 'Classic Sauce (Lemon & Olive Oil)', price: 0 },
+    { name: 'Balsamic Cream', price: 0 },
+    { name: 'Caesar Sauce', price: 0 },
+    { name: 'Thai Sauce', price: 0 }
+  ]
+},
+
+
+
+
+
 ];
 
 const BuildSalad: React.FC = () => {

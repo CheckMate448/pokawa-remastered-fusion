@@ -9,6 +9,8 @@ import saladeNicoiseImage from '@/assets/salades/nicoise.jpg';
 import saladeExotiqueImage from '@/assets/salades/exotique.jpg';
 import saladeMexicaineImage from '@/assets/salades/mexicaine.jpg';
 import saladeProteineeImage from '@/assets/salades/proteinee.jpg';
+import RizBowlsImage from '@/assets/VEGETA PUCTURE.jpg'
+
 
 const menuItems = [
   {
@@ -70,10 +72,42 @@ const menuItems = [
     image: saladeProteineeImage,
     rating: 4.9,
     popular: true
-  }
+  },
+  {
+  id: 16,
+  name: "Bol de Riz Japonais",
+  description: "Riz japonais, poulet pané, graines de sésame, sauce curry (pommes de terre, oignons, carottes), oignons fins, coriandre, sauce croustillante.",
+  price: 26.00,
+  category: "Bowls",
+  image: saladeCesareImage,
+  rating: 4.8,
+  popular: true
+},
+{
+  id: 17,
+  name: "Bol de Riz Mexicain",
+  description: "Riz basmati, sauce au bœuf émincé, haricots rouges, coriandre, crackers, tomates cerises, poivrons variés, avocat, maïs, oignons caramélisés.",
+  price: 29.00,
+  category: "Bowls",
+  image: saladeCesareImage,
+  rating: 4.9,
+  popular: true
+},
+{
+  id: 18,
+  name: "Bol de Riz Français",
+  description: "Riz basmati, haricots verts, épinards, sauce blanquette (carottes, poulet, oignons), oignons caramélisés, noix caramélisées, champignons, Grana Padano.",
+  price: 25.00,
+  category: "Bowls",
+  image: saladeCesareImage,
+  rating: 4.7,
+  popular: false
+}
+
+    
 ];
 
-const categories = ["All", "Salades"];
+const categories = ["All", "Salades","Bowls"];
 
 const FeaturedMenu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
