@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { Heart, Plus, Star, ArrowRight, Loader2 } from 'lucide-react';
+import { Heart, Plus, Star, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useMenuItems } from '@/hooks/useMenuItems';
-import { useIngredients } from '@/hooks/useIngredients';
 import menuImage from '@/assets/menu-bowls.jpg';
-
-// Fallback images for menu items without images
 import saladeCesareImage from '@/assets/salades/cesar.jpg';
 import saladeItalienneImage from '@/assets/salades/italienne.jpg';
 import saladeNicoiseImage from '@/assets/salades/nicoise.jpg';
@@ -14,66 +10,86 @@ import saladeExotiqueImage from '@/assets/salades/exotique.jpg';
 import saladeMexicaineImage from '@/assets/salades/mexicaine.jpg';
 import saladeProteineeImage from '@/assets/salades/proteinee.jpg';
 
-const fallbackImages: Record<string, string> = {
-  'Salade César': saladeCesareImage,
-  'Salade Italienne': saladeItalienneImage,
-  'Salade Niçoise': saladeNicoiseImage,
-  'Salade Exotique': saladeExotiqueImage,
-  'Salade Mexicaine': saladeMexicaineImage,
-  'Salade Protéinée': saladeProteineeImage,
-};
+const menuItems = [
+  {
+    id: 10,
+    name: "Salade César",
+    description: "Une salade classique revisitée : laitue romaine croquante, tomates cerises juteuses, croûtons dorés, graines de chia, roquette fraîche, coriandre et graines de courge. Accompagnée d’un œuf poché, de fromage Grana Padano, et d’une escalope tendre (panée ou sauce moutarde citron). Le tout nappé d’une savoureuse sauce César.",
+    price: 20.00,
+    category: "Salades",
+    image: saladeCesareImage,
+    rating: 4.8,
+    popular: true
+  },
+  {
+    id: 11,
+    name: "Salade Italienne",
+    description: "Une explosion de saveurs méditerranéennes avec du pain banette croustillant, des tomates fraîches, de la roquette, des courgettes grillées et une burrata onctueuse. Garnie de chips d’ail, menthe, coriandre, noix caramélisées et basilic. Arrosée de crème balsamique, sauce pesto et parsemée de Grana Padano.",
+    price: 25.00,
+    category: "Salades",
+    image: saladeItalienneImage,
+    rating: 4.9,
+    popular: true
+  },
+  {
+    id: 12,
+    name: "Salade Niçoise",
+    description: "Un classique du sud de la France : laitue fraîche, tomates cerises, œuf dur, poivrons, haricots verts, radis et pommes de terre sautées. Le tout relevé avec une sauce au thon et olives, des oignons fins et une vinaigrette classique.",
+    price: 18.00,
+    category: "Salades",
+    image: saladeNicoiseImage,
+    rating: 4.7,
+    popular: false
+  },
+  {
+    id: 13,
+    name: "Salade Exotique",
+    description: "Fraîcheur tropicale garantie ! Roquette, tomates cerises, avocat crémeux, carottes croquantes, crevettes, radis, ananas sucré, menthe et aneth. Complétée par du concombre, de la ricotta, des graines de chia, du maïs et une délicieuse sauce thaïe.",
+    price: 32.00,
+    category: "Salades",
+    image: saladeExotiqueImage,
+    rating: 4.8,
+    popular: false
+  },
+  {
+    id: 14,
+    name: "Salade Mexicaine",
+    description: "Une salade épicée et gourmande avec de la laitue, du poulet piquant, du maïs, des tomates cerises, des crackers de pita, poivrons sautés, haricots rouges, avocat, pommes de terre, oignons caramélisés, persil et une sauce fromagère onctueuse.",
+    price: 26.00,
+    category: "Salades",
+    image: saladeMexicaineImage,
+    rating: 4.7,
+    popular: true
+  },
+  {
+    id: 15,
+    name: "Salade Protéinée",
+    description: "Un boost d’énergie et de protéines ! Laitue, riz basmati, tomates cerises, escalope moutarde citron, deux œufs durs, poulet fumé, maïs, persil et fromage sicilien. Garnie d’un mix de graines croquantes et d’une sauce fromagère savoureuse.",
+    price: 28.00,
+    category: "Salades",
+    image: saladeProteineeImage,
+    rating: 4.9,
+    popular: true
+  }
+];
+
+const categories = ["All", "Salades"];
 
 const FeaturedMenu = () => {
-  const { menuItems, loading: menuLoading } = useMenuItems();
-  const { ingredients, loading: ingredientsLoading } = useIngredients();
   const [activeCategory, setActiveCategory] = useState("All");
-  const [favorites, setFavorites] = useState<string[]>([]);
-
-  // Filter available menu items (only show items that are available)
-  const availableMenuItems = menuItems.filter(item => item.is_available);
-  
-  // Get unique categories from menu items
-  const categories = ["All", ...Array.from(new Set(availableMenuItems.map(item => item.category)))];
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   const filteredItems = activeCategory === "All" 
-    ? availableMenuItems 
-    : availableMenuItems.filter(item => item.category === activeCategory);
+    ? menuItems 
+    : menuItems.filter(item => item.category === activeCategory);
 
-  const toggleFavorite = (id: string) => {
+  const toggleFavorite = (id: number) => {
     setFavorites(prev => 
       prev.includes(id) 
         ? prev.filter(itemId => itemId !== id)
         : [...prev, id]
     );
   };
-
-  // Function to get ingredient names for display
-  const getIngredientNames = (ingredientIds: string[]) => {
-    return ingredientIds
-      .map(id => ingredients.find(ing => ing.id === id)?.name)
-      .filter(Boolean)
-      .slice(0, 3) // Show only first 3 ingredients
-      .join(', ');
-  };
-
-  // Get image URL with fallback
-  const getImageUrl = (item: any) => {
-    if (item.image_url) return item.image_url;
-    return fallbackImages[item.title] || menuImage;
-  };
-
-  if (menuLoading || ingredientsLoading) {
-    return (
-      <section id="menu" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-            <p className="mt-4 text-muted-foreground">Loading menu...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="menu" className="py-20 bg-muted/30">
@@ -121,12 +137,12 @@ const FeaturedMenu = () => {
               {/* Image */}
               <div className="relative overflow-hidden rounded-2xl mb-6">
                 <img 
-                  src={getImageUrl(item)} 
-                  alt={item.title}
+                  src={item.image} 
+                  alt={item.name}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-smooth"
                 />
                 <div className="absolute top-4 right-4 flex gap-2">
-                  {item.is_popular && (
+                  {item.popular && (
                     <div className="bg-secondary text-white px-3 py-1 rounded-full text-sm font-semibold">
                       Popular
                     </div>
@@ -140,35 +156,24 @@ const FeaturedMenu = () => {
                     <Heart className={`w-4 h-4 ${favorites.includes(item.id) ? 'fill-current' : ''}`} />
                   </Button>
                 </div>
-                {item.rating && (
-                  <div className="absolute bottom-4 left-4 flex items-center gap-1 bg-white/90 px-2 py-1 rounded-full">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm font-semibold">{item.rating}</span>
-                  </div>
-                )}
+                <div className="absolute bottom-4 left-4 flex items-center gap-1 bg-white/90 px-2 py-1 rounded-full">
+                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                  <span className="text-sm font-semibold">{item.rating}</span>
+                </div>
               </div>
 
               {/* Content */}
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <h3 className="text-xl font-playfair font-semibold text-foreground group-hover:text-primary transition-smooth">
-                    {item.title}
+                    {item.name}
                   </h3>
                   <span className="text-2xl font-bold text-primary">{item.price.toFixed(2)} TND</span>
                 </div>
                 
                 <p className="text-muted-foreground leading-relaxed">
-                  {item.description || `Delicious salad with ${getIngredientNames(item.ingredients)}`}
+                  {item.description}
                 </p>
-
-                {/* Ingredients preview */}
-                {item.ingredients.length > 0 && (
-                  <div className="text-xs text-muted-foreground">
-                    <span className="font-medium">Ingredients: </span>
-                    {getIngredientNames(item.ingredients)}
-                    {item.ingredients.length > 3 && '...'}
-                  </div>
-                )}
 
                 <div className="flex items-center justify-between pt-4">
                   <span className="inline-flex items-center px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
@@ -183,13 +188,6 @@ const FeaturedMenu = () => {
             </Card>
           ))}
         </div>
-
-        {/* Empty state */}
-        {filteredItems.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">No menu items available in this category.</p>
-          </div>
-        )}
 
         {/* View All Button */}
         <div className="text-center mt-12">
