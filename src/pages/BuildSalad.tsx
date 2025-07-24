@@ -6,118 +6,111 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, ShoppingCart } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ingredientCategories = [
   {
-    name: 'Choose a Base',
+    nameKey: 'category.base',
     options: [
-      { name: 'Lettuce', price: 3.5 },
-      { name: 'Rice', price: 4 },
-      { name: 'Quinoa', price: 7 },
-      { name: 'Lettuce & Rice', price: 5 }
+      { nameKey: 'ingredient.lettuce', price: 3.5 },
+      { nameKey: 'ingredient.rice', price: 4 },
+      { nameKey: 'ingredient.quinoa', price: 7 },
+      { nameKey: 'ingredient.lettuceRice', price: 5 }
     ]
   },
   {
-    name: 'Choose a Protein (OR GO VEGETARIAN)',
+    nameKey: 'category.protein',
     options: [
-      { name: 'Spicy Chicken', price: 4 },
-      { name: 'Lemon Mustard Chicken Escalope', price: 4 },
-      { name: 'Chicken Supreme', price: 4 },
-      { name: 'Tuna', price: 3.5 },
-      { name: 'Ham', price: 3.5 },
-      { name: 'Octopus', price: 11 },
-      { name: 'Shrimp', price: 11 },
-      { name: 'Egg', price: 1 }
-      
+      { nameKey: 'ingredient.spicyChicken', price: 4 },
+      { nameKey: 'ingredient.lemonMustardChicken', price: 4 },
+      { nameKey: 'ingredient.chickenSupreme', price: 4 },
+      { nameKey: 'ingredient.tuna', price: 3.5 },
+      { nameKey: 'ingredient.ham', price: 3.5 },
+      { nameKey: 'ingredient.octopus', price: 11 },
+      { nameKey: 'ingredient.shrimp', price: 11 },
+      { nameKey: 'ingredient.egg', price: 1 }
     ]
   },
   {
-    name: 'CHOOSE YOUR VEGETABLES',
+    nameKey: 'category.vegetables',
     options: [
-      { name: 'Corn', price: 1.5 },
-      { name: 'Sweet Potato', price: 2.5 },
-      { name: 'Carrot', price: 1 },
-      { name: 'Red/Green Cabbage', price: 1 },
-      { name: 'Zucchini', price: 1.5 },
-      { name: 'Broccoli', price: 3 },
-      { name: 'Cherry Tomato', price: 1.5 },
-      { name: 'Spinach', price: 2.5 },
-      { name: 'Caramelized Onions', price: 1.5 },
-      { name: 'Bell Pepper', price: 2 },
-      { name: 'Cucumber', price: 1 },
-      { name: 'Beetroot', price: 1.5 },
-      { name: 'Eggplant', price: 1.5 },
-      { name: 'Mushroom', price: 3.5 },
-      { name: 'Onion', price: 1 },
-      { name: 'Arugula', price: 1.5 },
-      { name: 'Green/Red Bean', price: 2.5 },
-      { name: 'Potato', price: 1.5 },
-      { name: 'Artichoke', price: 2.5 },
-
+      { nameKey: 'ingredient.corn', price: 1.5 },
+      { nameKey: 'ingredient.sweetPotato', price: 2.5 },
+      { nameKey: 'ingredient.carrot', price: 1 },
+      { nameKey: 'ingredient.cabbage', price: 1 },
+      { nameKey: 'ingredient.zucchini', price: 1.5 },
+      { nameKey: 'ingredient.broccoli', price: 3 },
+      { nameKey: 'ingredient.cherryTomato', price: 1.5 },
+      { nameKey: 'ingredient.spinach', price: 2.5 },
+      { nameKey: 'ingredient.caramelizedOnions', price: 1.5 },
+      { nameKey: 'ingredient.bellPepper', price: 2 },
+      { nameKey: 'ingredient.cucumber', price: 1 },
+      { nameKey: 'ingredient.beetroot', price: 1.5 },
+      { nameKey: 'ingredient.eggplant', price: 1.5 },
+      { nameKey: 'ingredient.mushroom', price: 3.5 },
+      { nameKey: 'ingredient.onion', price: 1 },
+      { nameKey: 'ingredient.arugula', price: 1.5 },
+      { nameKey: 'ingredient.beans', price: 2.5 },
+      { nameKey: 'ingredient.potato', price: 1.5 },
+      { nameKey: 'ingredient.artichoke', price: 2.5 }
     ]
   },
-{
-  name: 'CHOOSE 1 CHEESE',
-  options: [
-    { name: 'Sicilien', price: 3 },
-    { name: 'Ricotta', price: 3 },
-    { name: 'Mozzarella Ball', price: 4 },
-    { name: 'Gouda', price: 3.5 },
-    { name: 'Gruyère', price: 3.5 },
-    { name: 'Grana Padano', price: 4.5 }
-  ]
-},
-
-{
-  name: 'CHOOSE YOUR FRUITS & SEEDS',
-  options: [
-    { name: 'Avocado', price: 6 },
-    { name: 'Pineapple', price: 4 },
-    { name: 'Seed Mix', price: 3.5 },
-    { name: 'Chia Seeds', price: 2 },
-    { name: 'Kiwi', price: 3 },
-    { name: 'Lemon', price: 0.5 },
-    { name: 'Caramelized Nuts', price: 3.5 },
-    { name: 'Cashew Nuts', price: 3 },
-    { name: 'Peanut', price: 1.5 },
-    { name: 'Raisins', price: 1.5 },
-    { name: 'Sliced Almonds', price: 3 },
-    { name: 'Sesame', price: 2 }
-  ]
-},
-{
-  name: 'EXTRA & TOPPINGS',
-  options: [
-    { name: 'Preserved Lemon', price: 1 },
-    { name: 'Asian Pickles (Cucumber & Carrot)', price: 4 },
-    { name: 'Sun-Dried Tomatoes', price: 1.5 },
-    { name: 'Cayenne Pepper', price: 1 },
-    { name: 'Pickles', price: 1 },
-    { name: 'Capres', price: 1 },
-    { name: 'Olives', price: 1 },
-    { name: 'Crouton', price: 0.5 },
-    { name: 'Crackers', price: 0.5 }
-  ]
-},
-{
-  name: 'CHOOSE A SAUCE',
-  options: [
-    { name: 'Pesto Sauce', price: 0 },
-    { name: 'Creamy Cheese Sauce', price: 0 },
-    { name: 'Asian Sauce', price: 0 },
-    { name: 'Citrus Sauce (Orange & Lemon)', price: 0 },
-    { name: 'Honey Balsamic Sauce', price: 0 },
-    { name: 'Classic Sauce (Lemon & Olive Oil)', price: 0 },
-    { name: 'Balsamic Cream', price: 0 },
-    { name: 'Caesar Sauce', price: 0 },
-    { name: 'Thai Sauce', price: 0 }
-  ]
-},
-
-
-
-
-
+  {
+    nameKey: 'category.cheese',
+    options: [
+      { nameKey: 'ingredient.sicilien', price: 3 },
+      { nameKey: 'ingredient.ricotta', price: 3 },
+      { nameKey: 'ingredient.mozzarellaBall', price: 4 },
+      { nameKey: 'ingredient.gouda', price: 3.5 },
+      { nameKey: 'ingredient.gruyere', price: 3.5 },
+      { nameKey: 'ingredient.granaPadano', price: 4.5 }
+    ]
+  },
+  {
+    nameKey: 'category.fruitsSeeds',
+    options: [
+      { nameKey: 'ingredient.avocado', price: 6 },
+      { nameKey: 'ingredient.pineapple', price: 4 },
+      { nameKey: 'ingredient.seedMix', price: 3.5 },
+      { nameKey: 'ingredient.chiaSeeds', price: 2 },
+      { nameKey: 'ingredient.kiwi', price: 3 },
+      { nameKey: 'ingredient.lemon', price: 0.5 },
+      { nameKey: 'ingredient.caramelizedNuts', price: 3.5 },
+      { nameKey: 'ingredient.cashewNuts', price: 3 },
+      { nameKey: 'ingredient.peanut', price: 1.5 },
+      { nameKey: 'ingredient.raisins', price: 1.5 },
+      { nameKey: 'ingredient.slicedAlmonds', price: 3 },
+      { nameKey: 'ingredient.sesame', price: 2 }
+    ]
+  },
+  {
+    nameKey: 'category.extras',
+    options: [
+      { nameKey: 'ingredient.preservedLemon', price: 1 },
+      { nameKey: 'ingredient.asianPickles', price: 4 },
+      { nameKey: 'ingredient.sunDriedTomatoes', price: 1.5 },
+      { nameKey: 'ingredient.cayennePepper', price: 1 },
+      { nameKey: 'ingredient.pickles', price: 1 },
+      { nameKey: 'ingredient.capres', price: 1 },
+      { nameKey: 'ingredient.olives', price: 1 },
+      { nameKey: 'ingredient.crouton', price: 0.5 },
+      { nameKey: 'ingredient.crackers', price: 0.5 }
+    ]
+  },
+  {
+    nameKey: 'category.sauce',
+    options: [
+      { nameKey: 'ingredient.pestoSauce', price: 0 },
+      { nameKey: 'ingredient.creamyCheeseSauce', price: 0 },
+      { nameKey: 'ingredient.asianSauce', price: 0 },
+      { nameKey: 'ingredient.citrusSauce', price: 0 },
+      { nameKey: 'ingredient.honeyBalsamicSauce', price: 0 },
+      { nameKey: 'ingredient.classicSauce', price: 0 },
+      { nameKey: 'ingredient.balsamicCream', price: 0 },
+      { nameKey: 'ingredient.caesarSauce', price: 0 },
+      { nameKey: 'ingredient.thaiSauce', price: 0 }
+    ]
+  }
 ];
 
 interface Salad {
@@ -126,21 +119,22 @@ interface Salad {
 }
 
 const BuildSalad: React.FC = () => {
+  const { t } = useLanguage();
   const [salads, setSalads] = useState<Salad[]>([{ id: '1', ingredients: {} }]);
   const [activeSaladId, setActiveSaladId] = useState<string>('1');
 
   const activeSalad = salads.find(s => s.id === activeSaladId)!;
 
-  const handleSelect = (cat: string, option: string) => {
+  const handleSelect = (catKey: string, optionKey: string) => {
     setSalads(prev => prev.map(salad => 
       salad.id === activeSaladId 
         ? {
             ...salad,
             ingredients: {
               ...salad.ingredients,
-              [cat]: salad.ingredients[cat]?.includes(option)
-                ? salad.ingredients[cat].filter(o => o !== option)
-                : [...(salad.ingredients[cat] || []), option]
+              [catKey]: salad.ingredients[catKey]?.includes(optionKey)
+                ? salad.ingredients[catKey].filter(o => o !== optionKey)
+                : [...(salad.ingredients[catKey] || []), optionKey]
             }
           }
         : salad
@@ -163,16 +157,16 @@ const BuildSalad: React.FC = () => {
 
   const getSummary = (salad: Salad) => {
     return ingredientCategories
-      .filter(cat => salad.ingredients[cat.name]?.length > 0)
-      .map(cat => `🥗 ${cat.name}:\n   ${salad.ingredients[cat.name].join(', ')}`)
+      .filter(cat => salad.ingredients[cat.nameKey]?.length > 0)
+      .map(cat => `🥗 ${t(cat.nameKey)}:\n   ${salad.ingredients[cat.nameKey].map(key => t(key)).join(', ')}`)
       .join('\n\n');
   };
 
   const getTotal = (salad: Salad) => {
     let total = 0;
     ingredientCategories.forEach((cat) => {
-      (salad.ingredients[cat.name] || []).forEach((sel) => {
-        const found = cat.options.find((opt) => opt.name === sel);
+      (salad.ingredients[cat.nameKey] || []).forEach((sel) => {
+        const found = cat.options.find((opt) => opt.nameKey === sel);
         if (found) total += found.price;
       });
     });
@@ -188,11 +182,11 @@ const BuildSalad: React.FC = () => {
       .map((salad, index) => {
         const summary = getSummary(salad);
         const total = getTotal(salad);
-        return `🌟 SALADE ${index + 1}:\n${summary}\n💰 Prix: ${total} TND`;
+        return `🌟 ${t('buildSalad.salad').toUpperCase()} ${index + 1}:\n${summary}\n💰 ${t('whatsapp.price')}: ${total} TND`;
       })
       .join('\n\n' + '═'.repeat(40) + '\n\n');
 
-    return `🥗 COMMANDE SALADES PERSONNALISÉES\n${'═'.repeat(40)}\n\n${orderDetails}\n\n🛒 TOTAL COMMANDE: ${getTotalOrder()} TND\n\n📞 Merci de confirmer la commande!`;
+    return `🥗 ${t('whatsapp.customSalads').toUpperCase()}\n${'═'.repeat(40)}\n\n${orderDetails}\n\n🛒 ${t('whatsapp.totalOrder')}: ${getTotalOrder()} TND\n\n📞 ${t('whatsapp.confirmOrder')}`;
   };
 
   const handleSendOrder = () => {
@@ -206,10 +200,10 @@ const BuildSalad: React.FC = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-6xl font-playfair font-bold text-primary mb-4">
-            Composez vos salades
+            {t('buildSalad.title')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Créez des salades sur mesure avec nos ingrédients frais et de qualité
+            {t('buildSalad.subtitle')}
           </p>
         </div>
 
@@ -217,10 +211,10 @@ const BuildSalad: React.FC = () => {
         <Card className="mb-8 border-2 border-primary/20 shadow-lg">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl text-primary">Mes Salades</CardTitle>
+              <CardTitle className="text-xl text-primary">{t('buildSalad.mySalads')}</CardTitle>
               <Button onClick={addNewSalad} size="sm" className="gap-2">
                 <Plus className="w-4 h-4" />
-                Nouvelle Salade
+                {t('buildSalad.newSalad')}
               </Button>
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
@@ -235,7 +229,7 @@ const BuildSalad: React.FC = () => {
                     }`}
                     onClick={() => setActiveSaladId(salad.id)}
                   >
-                    Salade {index + 1} ({getTotal(salad)} TND)
+                    {t('buildSalad.salad')} {index + 1} ({getTotal(salad)} TND)
                   </Badge>
                   {salads.length > 1 && (
                     <Button
@@ -257,19 +251,19 @@ const BuildSalad: React.FC = () => {
           {/* Ingredients Selection */}
           <div className="lg:col-span-2 space-y-6">
             {ingredientCategories.map((cat) => (
-              <Card key={cat.name} className="shadow-md hover:shadow-lg transition-shadow">
+              <Card key={cat.nameKey} className="shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg text-primary font-semibold">
-                    {cat.name}
+                    {t(cat.nameKey)}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {cat.options.map((option) => (
                       <label
-                        key={option.name}
+                        key={option.nameKey}
                         className={`group relative flex flex-col p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                          activeSalad.ingredients[cat.name]?.includes(option.name)
+                          activeSalad.ingredients[cat.nameKey]?.includes(option.nameKey)
                             ? 'bg-primary/10 border-primary text-primary shadow-md transform scale-105'
                             : 'bg-card border-border hover:border-primary/50 hover:bg-muted/50'
                         }`}
@@ -277,16 +271,16 @@ const BuildSalad: React.FC = () => {
                         <input
                           type="checkbox"
                           className="hidden"
-                          checked={activeSalad.ingredients[cat.name]?.includes(option.name) || false}
-                          onChange={() => handleSelect(cat.name, option.name)}
+                          checked={activeSalad.ingredients[cat.nameKey]?.includes(option.nameKey) || false}
+                          onChange={() => handleSelect(cat.nameKey, option.nameKey)}
                         />
                         <div className="flex items-center justify-between">
-                          <span className="font-medium text-sm">{option.name}</span>
+                          <span className="font-medium text-sm">{t(option.nameKey)}</span>
                           <Badge variant="secondary" className="text-xs">
                             {option.price} TND
                           </Badge>
                         </div>
-                        {activeSalad.ingredients[cat.name]?.includes(option.name) && (
+                        {activeSalad.ingredients[cat.nameKey]?.includes(option.nameKey) && (
                           <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></div>
                         )}
                       </label>
@@ -304,22 +298,22 @@ const BuildSalad: React.FC = () => {
               <Card className="shadow-lg border-2 border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-center text-primary">
-                    Salade {salads.findIndex(s => s.id === activeSaladId) + 1}
+                    {t('buildSalad.salad')} {salads.findIndex(s => s.id === activeSaladId) + 1}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {ingredientCategories.map((cat) => {
-                    const selected = activeSalad.ingredients[cat.name] || [];
+                    const selected = activeSalad.ingredients[cat.nameKey] || [];
                     if (selected.length === 0) return null;
                     return (
-                      <div key={cat.name} className="space-y-2">
+                      <div key={cat.nameKey} className="space-y-2">
                         <h4 className="font-semibold text-sm text-muted-foreground">
-                          {cat.name}
+                          {t(cat.nameKey)}
                         </h4>
                         <div className="flex flex-wrap gap-1">
                           {selected.map((item) => (
                             <Badge key={item} variant="outline" className="text-xs">
-                              {item}
+                              {t(item)}
                             </Badge>
                           ))}
                         </div>
@@ -340,14 +334,14 @@ const BuildSalad: React.FC = () => {
                 <CardHeader>
                   <CardTitle className="text-center text-primary flex items-center justify-center gap-2">
                     <ShoppingCart className="w-5 h-5" />
-                    Commande Totale
+                    {t('buildSalad.totalOrder')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     {salads.map((salad, index) => (
                       <div key={salad.id} className="flex justify-between items-center py-2 px-3 rounded-lg bg-background/50">
-                        <span className="font-medium">Salade {index + 1}</span>
+                        <span className="font-medium">{t('buildSalad.salad')} {index + 1}</span>
                         <Badge className="bg-primary text-primary-foreground">
                           {getTotal(salad)} TND
                         </Badge>
@@ -366,7 +360,7 @@ const BuildSalad: React.FC = () => {
                       disabled={salads.every(salad => Object.keys(salad.ingredients).length === 0)}
                     >
                       <ShoppingCart className="w-5 h-5" />
-                      Commander via WhatsApp
+                      {t('buildSalad.orderViaWhatsApp')}
                     </Button>
                   </div>
                 </CardContent>
@@ -380,4 +374,4 @@ const BuildSalad: React.FC = () => {
   );
 };
 
-export default BuildSalad; 
+export default BuildSalad;

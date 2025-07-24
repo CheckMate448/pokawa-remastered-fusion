@@ -1,13 +1,19 @@
 import { useState } from 'react';
-import { Menu, X, ShoppingBag, User, MapPin, Calculator } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, MapPin, Calculator, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import CalorieCalculator from '@/components/CalorieCalculator';
+import { useLanguage } from '@/contexts/LanguageContext';
 import logoImage from '@/assets/VEGETA PUCTURE.jpg';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCalorieCalculatorOpen, setIsCalorieCalculatorOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'fr' : 'en');
+  };
 
   const handleFindStore = () => {
     window.open('https://www.google.com/maps/place/Vegeta/@36.8715275,10.3416246,17z/data=!4m6!3m5!1s0x12e2b50079a27d0b:0xd816c6af41ff627!8m2!3d36.8716671!4d10.3415633!16s%2Fg%2F11xdm4zlvh?entry=ttu', '_blank');
@@ -50,15 +56,26 @@ const Header = () => {
               <User className="w-4 h-4 mr-2" />
               Account
             </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-foreground hover:text-primary"
+              onClick={toggleLanguage}
+            >
+              <Globe className="w-4 h-4 mr-2" />
+              {language.toUpperCase()}
+            </Button>
             <Link to="/admin/login">
               <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
                 Admin
               </Button>
             </Link>
-            <Button className="btn-primary">
-              <ShoppingBag className="w-4 h-4 mr-2" />
-              Order Now
-            </Button>
+            <Link to="/build-salad">
+              <Button className="btn-primary">
+                <ShoppingBag className="w-4 h-4 mr-2" />
+                {t('nav.buildSalad')}
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -98,15 +115,26 @@ const Header = () => {
                   <User className="w-4 h-4 mr-2" />
                   Account
                 </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="justify-start"
+                  onClick={toggleLanguage}
+                >
+                  <Globe className="w-4 h-4 mr-2" />
+                  {t('nav.language')}: {language.toUpperCase()}
+                </Button>
                 <Link to="/admin/login">
                   <Button variant="ghost" size="sm" className="justify-start">
                     Admin
                   </Button>
                 </Link>
-                <Button className="btn-primary">
-                  <ShoppingBag className="w-4 h-4 mr-2" />
-                  Order Now
-                </Button>
+                <Link to="/build-salad">
+                  <Button className="btn-primary">
+                    <ShoppingBag className="w-4 h-4 mr-2" />
+                    {t('nav.buildSalad')}
+                  </Button>
+                </Link>
               </div>
             </nav>
           </div>
